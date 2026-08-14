@@ -1,10 +1,15 @@
 from PIL import Image
-im = Image.open("images/image.jpg")
+import sys
+from colorama import Fore
+
+path = sys.argv[1]
+color = getattr(Fore, sys.argv[2].upper())
+im = Image.open(f"images/{path}")
 
 ascii = "`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$"
 
-new_width = im.width // 4
-new_height = im.height // 4
+new_width = im.width // 7
+new_height = im.height // 7
 
 # Resize using the high-quality Resampling.LANCZOS filter
 shrunk_img = im.resize((new_width, new_height), Image.Resampling.LANCZOS)
@@ -20,13 +25,11 @@ Iterating through pixel contents:
 for row in range(new_height):
     sum_of_rgb = 0
     for col in range(new_width):
-    #     ...
         sum_of_rgb = sum(pixels[col, row])
-        # print(pixels[row, col], end='')
         brightness = sum_of_rgb / 3
         for _ in range(3):
             if brightness == 0:
-                print(ascii[0], end='')
+                print(color + ascii[0], end='')
             else:
-                print(ascii[int(100 / (255 / brightness) * 0.2)], end='')
+                print(color + ascii[int(100 / (255 / brightness) * 0.2)], end='')
     print()
