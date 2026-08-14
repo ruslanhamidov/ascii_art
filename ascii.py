@@ -5,6 +5,10 @@ import sys
 
 ascii = "`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$"
 
+if len(sys.argv) < 3:
+    print('Not enough command line arguments')
+    print('Usage: python ascii.py [filename/capture] [color] [a/mm/l/i]')
+    sys.exit(1)
 if sys.argv[1] == 'capture':
     capture_photo()
     path = 'capture.jpg'
@@ -13,7 +17,11 @@ else:
 color = getattr(Fore, sys.argv[2].upper())
 formula = sys.argv[3]
 
-im = Image.open(f"images/{path}")
+try:
+    im = Image.open(f"images/{path}")
+except FileNotFoundError:
+    print(f"Warning: file {path} was not found.")
+    sys.exit(1)
 
 new_width = im.width // 7
 new_height = im.height // 7
