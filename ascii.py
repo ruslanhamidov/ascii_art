@@ -1,11 +1,18 @@
 from PIL import Image
 from colorama import Fore
+from cam import capture_photo
 import sys
 
 ascii = "`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$"
-path = sys.argv[1]
+
+if sys.argv[1] == 'capture':
+    capture_photo()
+    path = 'capture.jpg'
+else:
+    path = sys.argv[1]
 color = getattr(Fore, sys.argv[2].upper())
 formula = sys.argv[3]
+
 im = Image.open(f"images/{path}")
 
 new_width = im.width // 7
