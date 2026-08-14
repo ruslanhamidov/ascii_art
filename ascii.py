@@ -34,6 +34,8 @@ for row in range(new_height):
                 res = int((minimum + maximum) / 2)
             case 'l':
                 res = int(0.21 * rgb[0] + 0.72 * rgb[1] + 0.07 * rgb[2])
+            case 'i':
+                res = (255 - sum(rgb)) / 3
         for _ in range(3):
             if res == 0:
                 print(color + ascii[0], end='')
