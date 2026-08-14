@@ -1,19 +1,18 @@
 from PIL import Image
-import sys
 from colorama import Fore
-
-path = sys.argv[1]
-color = getattr(Fore, sys.argv[2].upper())
-im = Image.open(f"images/{path}")
+import sys
 
 ascii = "`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$"
+path = sys.argv[1]
+color = getattr(Fore, sys.argv[2].upper())
+formula = sys.argv[3]
+im = Image.open(f"images/{path}")
 
 new_width = im.width // 7
 new_height = im.height // 7
 
-# Resize using the high-quality Resampling.LANCZOS filter
 shrunk_img = im.resize((new_width, new_height), Image.Resampling.LANCZOS)
-shrunk_img.save("shrunk_scaled.jpg")
+shrunk_img.save("images/shrunk_scaled.jpg")
 
 pixels = shrunk_img.load()
 print(f"""Successfully constructed pixel matrix!
@@ -21,15 +20,23 @@ Pixel matrix size: {new_width}x{new_height}
 Iterating through pixel contents:
 """)
 
-# formula = int(100 / (255 / n) * 0.2)
 for row in range(new_height):
-    sum_of_rgb = 0
+    res = 0
     for col in range(new_width):
-        sum_of_rgb = sum(pixels[col, row])
-        brightness = sum_of_rgb / 3
+        rgb = pixels[col, row]
+        match formula:
+            case 'a':
+                res = sum(rgb) / 3
+            case 'mm':
+                minimum = min(rgb)
+                maximum = max(rgb)
+
+                res = int((minimum + maximum) / 2)
+            case 'l':
+                res = int(0.21 * rgb[0] + 0.72 * rgb[1] + 0.07 * rgb[2])
         for _ in range(3):
-            if brightness == 0:
+            if res == 0:
                 print(color + ascii[0], end='')
             else:
-                print(color + ascii[int(100 / (255 / brightness) * 0.2)], end='')
+                print(color + ascii[int(100 / (255 / res) * 0.2)], end='')
     print()
